@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <script>
+      function viewSchedule() {
+        google.script.run.view_schedule(document.getElementById("formInfo"));
+      }
+
+      function editSchedule() {
+        google.script.run.edit_schedule(document.getElementById("formInfo"));
+      }
+
+      function shiftFilter() {
+        google.script.run.shift_filter(document.getElementById("filterInfo"));
+      }
+
+      function shiftSums() {
+        google.script.run.shift_sums(document.getElementById("filterInfo"));
+      }
+
+      function handleRangeTypeChange(event) {
+        const selectedValue = event.target.value;
+        const dayOptions = document.getElementById("weekDays");
+        dayOptions.style.display = selectedValue === "Week" ? "block" : "none";
+      }
+
+      window.onload = function () {
+        const rangeTypeSelect = document.getElementById("rangeType");
+        rangeTypeSelect.addEventListener("change", handleRangeTypeChange);
+      };
+
+    </script>
+
+    <style>
+      #text {
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        color: white;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 5px;
+        margin: 0;
+      }
+
+      .dropdown-container {
+        display: flex;
+        gap: 40px;
+        align-items: flex-start;
+        max-width: 600px;
+        margin-bottom: 10px;
+      }
+
+      #weekDays {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <form id="formInfo">
+      <label for="formDate">Date Range:</label><br>
+      <input type="date" name="start"/>
+      <input type="date" name="end"/>
+      <br><br>
+
+      <div class="dropdown-container">
+        <!-- Time Period Dropdown -->
+        <div>
+          <label for="timePeriod">Time:</label><br>
+          <select id="timePeriod" name="timePeriod">
+            <option value= 0>This</option>
+            <option value=-1>Last</option>
+            <option value= 1>Next</option>
+          </select>
+        </div>
+
+        <!-- Range Type Dropdown -->
+        <div>
+          <label for="rangeType">Range:</label><br>
+          <select id="rangeType" name="rangeType">
+            <option value="">---</option>
+            <option value="Week">Week</option>
+            <option value="Month">Month</option>
+            <option value="Quarter">Quarter</option>
+            <option value="Year">Year</option>
+          </select>
+        </div>
+
+        <!-- Day Options Dropdown (Shown only if "Week" is selected) -->
+        <div id="weekDays">
+          <label for="dayOption">Start Day:</label><br>
+          <select id="dayOption" name="startDay">
+            <option value=0>---</option>
+            <option value=0>Sunday</option>
+            <option value=1>Monday</option>
+            <option value=6>Saturday</option>
+          </select>
+        </div>
+      </div>
+
+    </form>
+
+    <input type="button" value="View Schedule" onclick="viewSchedule();">
+    <input type="button" value="Edit Schedule" onclick="editSchedule();"><br><br>
+
+    <!-- Status Legend -->
+    <p id="text" style="color: #000000;">Status Type:</p>
+    <p id="text" style="background-color: #6aa84f;">X = Full Day Worked</p>
+    <p id="text" style="background-color: #ff9900;">O = Out of Office</p>
+    <p id="text" style="background-color: #bf9000;">1-7 = Partial Day</p>
+    <p id="text" style="background-color: #3c78d8;">S = Sick Day</p>
+    <p id="text" style="background-color: #5a3286;">T = Training</p>
+    <p id="text" style="background-color: #25818e;">W = Work from Abroad</p>
+    <p id="text" style="background-color: #b10202;">H = Holiday</p>
+    <p id="text" style="background-color: #0000ff;">L = Leave of Absence</p>
+    <p id="text" style="background-color: #3d3d3d;">N = No Show</p>
+    <p id="text" style="background-color: #000000;">D = Delete Entry</p>
+    <hr>
+<div class="dropdown-container">
+  <form id="filterInfo">
+    <label for="shiftFilter">Filter:</label>
+    <select id="shiftFilter" name="shiftFilter">
+      <option value="">---</option>
+      <option value="X">X</option>
+      <option value="O">O</option>
+      <option value="S">S</option>
+      <option value="T">T</option>
+      <option value="W">W</option>
+      <option value="H">H</option>
+      <option value="S">L</option>
+      <option value="S">N</option>
+    </select>
+  </form><br>
+
+</div>
+  <input type="button" value="Filter by Marker" onclick="shiftFilter();">
+
+  <input type="button" value="Filter Sums" onclick="shiftSums();">
+
+
+  </body>
+</html>
